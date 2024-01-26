@@ -61,6 +61,26 @@ public extension UIView {
         }
     }
     
+    func fillSuperViewWithSafeArea(size: CGSize? = nil, inset: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0)) {
+        guard let superview else { return }
+        snp.makeConstraints {
+            $0.top.equalTo(superview.safeAreaLayoutGuide.snp.top).offset(inset.top)
+            $0.bottom.equalTo(superview.safeAreaLayoutGuide.snp.bottom).offset(-inset.bottom)
+            $0.leading.equalTo(superview.safeAreaLayoutGuide.snp.leading).offset(inset.left)
+            $0.trailing.equalTo(superview.safeAreaLayoutGuide.snp.trailing).offset(-inset.right)
+
+            if let size = size {
+                if size.width != 0 {
+                    $0.width.equalTo(size.width)
+                }
+                if size.height != 0 {
+                    $0.height.equalTo(size.height)
+                }
+            }
+        }
+    }
+
+    
     @discardableResult
     func constrainWidth(_ width: CGFloat) -> UIView {
         snp.makeConstraints { $0.width.equalTo(width) }
